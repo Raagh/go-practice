@@ -1,7 +1,9 @@
 package structs
 
+import "fmt"
+
 type User struct {
-	userId    string
+	id        string
 	firstName string
 	lastName  string
 	age       int
@@ -12,17 +14,27 @@ func (u *User) GetOlder() {
 }
 
 func (u User) GetFullName() string {
-	// test := User{
-	// 	userId: "c807143a-ceec-4838-9371-bcdaa4b83e8f",
-	// 	age:    0,
-	// }
-	//
-	// name := test.GetFullName()
-	//
-	// /*
-	// * it should be one year older after this
-	//  */
-	// test.GetOlder()
-
 	return u.firstName + " " + u.lastName
+}
+
+func main() {
+	test := User{
+		id:        "c807143a-ceec-4838-9371-bcdaa4b83e8f",
+		firstName: "Patricio",
+		lastName:  "Lopez",
+		age:       0,
+	}
+
+	test.firstName = "Ramon"
+
+	name := test.GetFullName()
+
+	fmt.Println("This is the name: ", name)
+
+	/*
+	* it should be one year older after this
+	 */
+	test.GetOlder()
+
+	fmt.Println("This is the age", test.age)
 }
