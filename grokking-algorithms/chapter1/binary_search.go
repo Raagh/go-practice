@@ -8,9 +8,9 @@ func BinarySearch(array []int, num int) int {
 		mid := (low + high) / 2
 		guess := array[mid]
 
-		if guess == num {
+		if num == guess {
 			return mid
-		} else if guess < num {
+		} else if num > guess {
 			low = mid + 1
 		} else {
 			high = mid - 1

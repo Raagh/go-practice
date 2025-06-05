@@ -5,12 +5,12 @@ import "slices"
 func SelectionSort(array []int) []int {
 	new := make([]int, len(array))
 
-	for i := range array {
+	for i := range new {
 		smallestIndex := findSmallestIndex(array)
-		smallestElement := array[smallestIndex]
+		smallest := array[smallestIndex]
 
+		new[i] = smallest
 		array = slices.Delete(array, smallestIndex, smallestIndex+1)
-		new[i] = smallestElement
 	}
 
 	return new
