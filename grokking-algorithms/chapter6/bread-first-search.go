@@ -39,28 +39,28 @@ func ShortestPathToSeller(graph map[string][]string, start string) []string {
 	visited := map[string]bool{}
 
 	for len(queue) > 0 {
-		current := queue[0]
+		element := queue[0]
 		queue = queue[1:]
 
-		if visited[current.Name] {
+		if visited[element.Name] {
 			continue
 		}
 
-		if isSeller(current.Name) {
-			return current.Path
+		if isSeller(element.Name) {
+			return element.Path
 		}
 
-		for _, neighbor := range graph[current.Name] {
+		for _, neighbor := range graph[element.Name] {
 			if visited[neighbor] {
 				continue
 			}
 
-			newPath := slices.Clone(current.Path)
+			newPath := slices.Clone(element.Path)
 			newPath = append(newPath, neighbor)
 			queue = append(queue, Node{Name: neighbor, Path: newPath})
 		}
 
-		visited[current.Name] = true
+		visited[element.Name] = true
 	}
 
 	return nil
