@@ -13,8 +13,8 @@ func QuickSort(arr []int) []int {
 	pivotIndex := rand.IntN(len(arr))
 	pivot := arr[pivotIndex]
 
-	withoutResults := slices.Delete(arr, pivotIndex, pivotIndex+1)
-	smaller, larger := getSmallerAndLarger(withoutResults, pivot)
+	withoutPivot := slices.Delete(arr, pivotIndex, pivotIndex+1)
+	smaller, larger := getSmallerAndLarger(withoutPivot, pivot)
 
 	return append(append(QuickSort(smaller), pivot), QuickSort(larger)...)
 }
