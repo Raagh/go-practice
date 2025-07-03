@@ -14,8 +14,7 @@ func IsThereASeller(graph map[string][]string, start string) string {
 		element := queue[0]
 		queue = queue[1:]
 
-		_, ok := visited[element]
-		if ok {
+		if visited[element] {
 			continue
 		}
 
