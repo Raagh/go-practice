@@ -27,14 +27,13 @@ func TestDijkstra_SimpleGraph(t *testing.T) {
 }
 
 func TestDijkstra_Unreachable(t *testing.T) {
-	infinity := int(^uint(0) >> 1)
 	graph := map[string]map[string]int{
 		"A": {"B": 1},
 		"B": {},
 		"C": {},
 	}
 	path, weight := Dijkstra(graph, "C", "B")
-	if path != nil || weight != infinity {
-		t.Errorf("expected nil path and infinity weight for unreachable node, got %v and %d", path, weight)
+	if path != nil || weight != -1 {
+		t.Errorf("expected nil path and -1 weight for unreachable node, got %v and %d", path, weight)
 	}
 }
