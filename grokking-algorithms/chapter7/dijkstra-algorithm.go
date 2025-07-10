@@ -1,43 +1,48 @@
 package chapter7
 
-func Dijkstra(graph map[string]map[string]int, start string, end string) (path []string, weight int) {
+import "math"
+
+func Dijkstra(graph map[string]map[string]int, start string, end string) ([]string, int) {
 	costs := map[string]int{}
 	parents := map[string]string{}
 	visited := map[string]bool{}
 
-	// populate costs and parents
+	// initialize all nodes with max int cost
+	for node := range graph {
+		costs[node] = math.MaxInt32
+	}
+	costs[start] = 0
+
+	// populate costs and parents for neighbors of start
 	for name, cost := range graph[start] {
 		costs[name] = cost
 		parents[name] = start
 	}
-	costs[end] = int(^uint(0) >> 1)
 
 	node := findLowestCostNode(costs, visited)
-
 	for node != "" {
-		neighbors := graph[node]
-		for neighbor, neighborCost := range neighbors {
+		for neighbor, neighborCost := range graph[node] {
 			newCost := costs[node] + neighborCost
-			if c, ok := costs[neighbor]; !ok || newCost < c {
+			if newCost < costs[neighbor] {
 				costs[neighbor] = newCost
 				parents[neighbor] = node
 			}
 		}
+
 		visited[node] = true
 		node = findLowestCostNode(costs, visited)
 	}
 
-	// reconstruct path
-	path = []string{}
-	curr := end
-	for {
-		path = append(path, curr)
-		p, ok := parents[curr]
-		if !ok {
-			break
-		}
+	if costs[end] == math.MaxInt32 {
+		return nil, -1
+	}
 
-		curr = p
+	// reconstruct path
+	path := []string{}
+	curr := end
+	for curr != "" {
+		path = append(path, curr)
+		curr = parents[curr]
 	}
 	reverse(path)
 
@@ -51,7 +56,7 @@ func reverse(nums []string) {
 }
 
 func findLowestCostNode(costs map[string]int, visited map[string]bool) string {
-	lowestNodeCost := int(^uint(0) >> 1)
+	lowestNodeCost := math.MaxInt32
 	lowestNodeCostName := ""
 	for name, cost := range costs {
 		if visited[name] {
