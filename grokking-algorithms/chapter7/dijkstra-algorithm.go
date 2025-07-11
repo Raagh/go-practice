@@ -20,7 +20,7 @@ func Dijkstra(graph map[string]map[string]int, start string, end string) ([]stri
 	}
 
 	node := findLowestCostNode(costs, visited)
-	for node != "" {
+	for node != end {
 		for neighbor, neighborCost := range graph[node] {
 			newCost := costs[node] + neighborCost
 			if newCost < costs[neighbor] {
@@ -56,18 +56,16 @@ func reverse(nums []string) {
 }
 
 func findLowestCostNode(costs map[string]int, visited map[string]bool) string {
-	lowestNodeCost := math.MaxInt32
-	lowestNodeCostName := ""
-	for name, cost := range costs {
-		if visited[name] {
-			continue
-		}
-
-		if cost < lowestNodeCost {
-			lowestNodeCost = cost
-			lowestNodeCostName = name
+	min := math.MaxInt
+	var lowest string
+	for node, cost := range costs {
+		if cost < min {
+			if visited[node] {
+				continue
+			}
+			min = cost
+			lowest = node
 		}
 	}
-
-	return lowestNodeCostName
+	return lowest
 }
