@@ -33,7 +33,7 @@ func TestDijkstra_Unreachable(t *testing.T) {
 		"C": {},
 	}
 	path, weight := Dijkstra(graph, "C", "B")
-	if path != nil || weight != -1 {
-		t.Errorf("expected nil path and -1 weight for unreachable node, got %v and %d", path, weight)
+	if path != nil || weight != 0 {
+		t.Errorf("expected nil path and 0 weight for unreachable node, got %v and %d", path, weight)
 	}
 }

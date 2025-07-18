@@ -34,7 +34,7 @@ func Dijkstra(graph map[string]map[string]int, start string, end string) ([]stri
 	}
 
 	if costs[end] == math.MaxInt32 {
-		return nil, -1
+		return nil, 0
 	}
 
 	// reconstruct path
@@ -44,6 +44,7 @@ func Dijkstra(graph map[string]map[string]int, start string, end string) ([]stri
 		path = append(path, curr)
 		curr = parents[curr]
 	}
+
 	reverse(path)
 
 	return path, costs[end]
@@ -59,10 +60,11 @@ func findLowestCostNode(costs map[string]int, visited map[string]bool) string {
 	min := math.MaxInt
 	var lowest string
 	for node, cost := range costs {
+		if visited[node] {
+			continue
+		}
+
 		if cost < min {
-			if visited[node] {
-				continue
-			}
 			min = cost
 			lowest = node
 		}
