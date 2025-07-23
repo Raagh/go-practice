@@ -11,9 +11,9 @@ func Dijkstra(graph map[string]map[string]int, start string, end string) ([]stri
 	for node := range graph {
 		costs[node] = math.MaxInt32
 	}
-	costs[start] = 0
 
 	// populate costs and parents for neighbors of start
+	costs[start] = 0
 	for name, cost := range graph[start] {
 		costs[name] = cost
 		parents[name] = start
