@@ -46,15 +46,23 @@ func SetCovering(stations map[string][]string, statesNeeded []string) []string {
 	return stationsUsed
 }
 
-func grabIntersection(array, array2 []string) []string {
-	intersection := []string{}
-	for _, element := range array {
-		for _, element2 := range array2 {
-			if element == element2 {
-				intersection = append(intersection, element)
-			}
+func grabIntersection(array1, array2 []string) []string {
+	// Use a map for O(1) lookups
+	lookup := make(map[string]struct{})
+	for _, item := range array1 {
+		lookup[item] = struct{}{}
+	}
+
+	// Check which elements from array2 exist in the map
+	var result []string
+	for _, item := range array2 {
+		if _, exists := lookup[item]; exists {
+			// If we find an item in both arrays, add it to results
+			result = append(result, item)
+			// Optional: delete from map to handle duplicates
+			// delete(lookup, item)
 		}
 	}
 
-	return intersection
+	return result
 }
