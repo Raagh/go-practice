@@ -1,68 +1,68 @@
 package chapter8
 
-import "slices"
-
-// SetCovering finds the smallest set of stations that cover all the required states.
-// stations: a map where keys are station names and values are sets of states each station covers
-// statesNeeded: a set of states that need to be covered
-// Returns a slice of station names that together cover all the required states
+// SetCovering picks a minimal-ish set of subsets whose union covers `universe`.
+// subsets: name -> slice of elements it covers
+// Returns the chosen subset names in greedy order.
 func SetCovering(stations map[string][]string, statesNeeded []string) []string {
-	statesStillNeeded := slices.Clone(statesNeeded)
-	stationsUsed := []string{}
+	needed := toSet(statesNeeded)
+	chosen := []string{}
 
-	for len(statesStillNeeded) > 0 {
-		bestStation := ""
-		maxStation := 0
-		for station, states := range stations {
-			// grab states that are covered by this station from statesStillNeeded
-			statesCovered := grabIntersection(statesStillNeeded, states)
+	// Preconvert subset slices to sets for speed
+	subsetSets := make(map[string]map[string]struct{}, len(stations))
+	for name, elems := range stations {
+		subsetSets[name] = toSet(elems)
+	}
 
-			// if statesCovered is bigger that maxStation
-			// set bestStation
-			if len(statesCovered) > maxStation {
-				maxStation = len(statesCovered)
-				bestStation = station
+	for len(needed) > 0 {
+		var bestStation string
+		var bestCoverCount int
+		var bestCover map[string]struct{}
+
+		for name, cover := range subsetSets {
+			inter := intersect(needed, cover)
+			if len(inter) > bestCoverCount {
+				bestCoverCount = len(inter)
+				bestCover = inter
+				bestStation = name
 			}
 		}
 
-		// Check if a valid station was found (maxStation > 0)
-		if maxStation == 0 {
-			// No station covers any remaining states, can't complete the coverage
+		if bestCoverCount == 0 {
+			// No remaining subset covers any uncovered element -> universe not fully coverable
 			break
 		}
 
-		// now that you have best station, rest all those states from statesTillNeeded
-		for _, v := range stations[bestStation] {
-			index := slices.Index(statesStillNeeded, v)
-			if index != -1 {
-				statesStillNeeded = slices.Delete(statesStillNeeded, index, index+1)
-			}
+		// Choose the best station and remove its covered elements from needed
+		chosen = append(chosen, bestStation)
+		for e := range bestCover {
+			delete(needed, e)
 		}
-
-		// add the station to stationsUsed
-		stationsUsed = append(stationsUsed, bestStation)
+		// Optional: remove chosen subset to avoid re-choosing
+		delete(subsetSets, bestStation)
 	}
 
-	return stationsUsed
+	// If needed not empty here, the input subsets don't cover the whole universe.
+	return chosen
 }
 
-func grabIntersection(array1, array2 []string) []string {
-	// Use a map for O(1) lookups
-	lookup := make(map[string]struct{})
-	for _, item := range array1 {
-		lookup[item] = struct{}{}
+func toSet(items []string) map[string]struct{} {
+	s := make(map[string]struct{}, len(items))
+	for _, x := range items {
+		s[x] = struct{}{}
 	}
+	return s
+}
 
-	// Check which elements from array2 exist in the map
-	var result []string
-	for _, item := range array2 {
-		if _, exists := lookup[item]; exists {
-			// If we find an item in both arrays, add it to results
-			result = append(result, item)
-			// Optional: delete from map to handle duplicates
-			// delete(lookup, item)
+func intersect(a, b map[string]struct{}) map[string]struct{} {
+	out := make(map[string]struct{})
+	// iterate over smaller set
+	if len(a) > len(b) {
+		a, b = b, a
+	}
+	for x := range a {
+		if _, ok := b[x]; ok {
+			out[x] = struct{}{}
 		}
 	}
-
-	return result
+	return out
 }
