@@ -7,28 +7,25 @@ func SetCovering(stations map[string][]string, statesNeeded []string) []string {
 	needed := toSet(statesNeeded)
 	chosen := []string{}
 
-	// Preconvert subset slices to sets for speed
-	subsetSets := make(map[string]map[string]struct{}, len(stations))
+	stationSets := make(map[string]map[string]struct{}, len(stations))
 	for name, elems := range stations {
-		subsetSets[name] = toSet(elems)
+		stationSets[name] = toSet(elems)
 	}
 
 	for len(needed) > 0 {
 		var bestStation string
-		var bestCoverCount int
 		var bestCover map[string]struct{}
 
-		for name, cover := range subsetSets {
-			inter := intersect(needed, cover)
-			if len(inter) > bestCoverCount {
-				bestCoverCount = len(inter)
-				bestCover = inter
-				bestStation = name
+		for station, statesForStation := range stationSets {
+			covered := intersect(needed, statesForStation)
+			if len(covered) > len(bestCover) {
+				bestStation = station
+				bestCover = covered
 			}
 		}
 
-		if bestCoverCount == 0 {
-			// No remaining subset covers any uncovered element -> universe not fully coverable
+		// No remaining subset covers any uncovered element -> universe not fully coverable
+		if len(bestCover) == 0 {
 			break
 		}
 
@@ -38,7 +35,7 @@ func SetCovering(stations map[string][]string, statesNeeded []string) []string {
 			delete(needed, e)
 		}
 		// Optional: remove chosen subset to avoid re-choosing
-		delete(subsetSets, bestStation)
+		delete(stationSets, bestStation)
 	}
 
 	// If needed not empty here, the input subsets don't cover the whole universe.
