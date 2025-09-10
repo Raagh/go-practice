@@ -23,18 +23,5 @@ package removeDuplicatesSorted
 // - -100 <= nums[i] <= 100
 // - nums is sorted in non-decreasing order
 func RemoveDuplicates(nums []int) int {
-	found := map[int]bool{}
-	k := 0
-
-	for i := 0; i < len(nums); i++ {
-		if found[nums[i]] {
-			continue
-		}
-
-		found[nums[i]] = true
-		nums[k] = nums[i]
-		k++
-	}
-
-	return k
+	return 0
 }

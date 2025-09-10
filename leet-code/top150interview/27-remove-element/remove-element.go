@@ -1,7 +1,5 @@
 package remove_element
 
-import "slices"
-
 // removeElement removes all occurrences of val from nums and returns the number of elements
 // that remain. The first k elements of nums will contain the elements that were not removed.
 // The order of elements may be changed.
@@ -22,12 +20,5 @@ import "slices"
 // - 0 <= nums[i] <= 50
 // - 0 <= val <= 100
 func removeElement(nums []int, val int) int {
-	for i := 0; i < len(nums); i++ {
-		if nums[i] == val {
-			nums = slices.Delete(nums, i, i+1)
-			i--
-		}
-	}
-
-	return len(nums)
+	return 0
 }

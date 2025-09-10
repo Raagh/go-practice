@@ -16,22 +16,5 @@ package majority_element
 // - 1 <= n <= 5 * 10^4
 // - -10^9 <= nums[i] <= 10^9
 func majorityElement(nums []int) int {
-	majorityThreashold := len(nums) / 2
-	counts := map[int]int{}
-
-	for i := 0; i < len(nums); i++ {
-		v := nums[i]
-
-		if count, ok := counts[v]; ok {
-			counts[v] = count + 1
-		} else {
-			counts[v] = 1
-		}
-
-		if counts[v] > majorityThreashold {
-			return v
-		}
-	}
-
-	return -1
+	return 0
 }

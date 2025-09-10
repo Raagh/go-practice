@@ -19,15 +19,5 @@ package firstoccurrence
 // - 1 <= haystack.length, needle.length <= 10^4
 // - haystack and needle consist of only lowercase English characters.
 func strStr(haystack string, needle string) int {
-	if len(needle) == 0 {
-		return 0
-	}
-
-	for i := 0; i <= len(haystack)-len(needle); i++ {
-		if haystack[i:i+len(needle)] == needle {
-			return i
-		}
-	}
-
-	return -1
+	return 0
 }

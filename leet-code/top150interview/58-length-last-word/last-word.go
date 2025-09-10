@@ -1,7 +1,5 @@
 package lastword
 
-import "strings"
-
 // lengthOfLastWord returns the length of the last word in the string.
 //
 // A word is defined as a maximal substring consisting of non-space characters only.
@@ -27,6 +25,5 @@ import "strings"
 // - s consists of only English letters and spaces ' '.
 // - There will be at least one word in s.
 func lengthOfLastWord(s string) int {
-	splits := strings.Split(strings.Trim(s, " "), " ")
-	return len(splits[len(splits)-1])
+	return 0
 }
